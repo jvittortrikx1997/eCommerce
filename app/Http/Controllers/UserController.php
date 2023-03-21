@@ -10,10 +10,11 @@ class UserController extends Controller
 {
     function login(Request $request){
         $user = User::where('email', $request->email)->first();
-        if($user || Hash::check($request->password, $user->password)){
-            return $user;
+        if(!$user || !Hash::check($request->password, $user->password)){
+            return "Usuárui ou senha informados inválidos";
         }else{
-            return 'E-mail e/ou senha inválidos';
+            $request->session()->put('user', $user);
+            return 'in';
         }
     }
 }
